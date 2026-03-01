@@ -9,3 +9,4 @@ fi
 SCRIPT_DIR=$(dirname "$0")
 
 "$SCRIPT_DIR/install/bash-user.sh" "$@"
+"$SCRIPT_DIR/install/nopasswd.sh" "$@"
