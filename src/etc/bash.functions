@@ -1,8 +1,11 @@
-parse_git_branch() {
+# These are kept as shell functions (rather than bin scripts) because they may
+# be called from PS1, where functions are preferred to avoid extra process forks.
+
+parse-git-branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-my_ip() {
+my-ip() {
     ifconfig | grep -oP "(?<=inet addr:)[\.0-9]*" | grep -v "127.0.0.1" | head -1
 }
 
@@ -18,7 +21,7 @@ trim() {
     echo "$var"
 }
 
-get_venv_name() {
+get-venv-name() {
     if [[ -z "${VIRTUAL_ENV}" ]]; then
         return
     fi
