@@ -31,7 +31,6 @@ install_symlinks_dir() {
     mkdir -p "$dest_dir"
 
     for src_file in "$src_dir"/*; do
-        [[ "$(basename "$src_file")" == "README.md" ]] && continue
         install_symlink "$src_file" "$dest_dir"
     done
 }

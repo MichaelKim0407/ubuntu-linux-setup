@@ -57,3 +57,7 @@ As the non-root user:
 ```bash
 ./install_user.sh --force
 ```
+
+## Documentation
+
+Per-component documentation is in [`docs/`](docs/).
