@@ -34,3 +34,14 @@ get-venv-name() {
 
     echo "${name}"
 }
+
+# Not used in PS1. Kept as a function (not a bin script) because it requires
+# shell builtins: $? for the calling shell's exit code, and history.
+# Usage: append "; alert" to any long-running command to get a desktop
+#   notification when it finishes, e.g.: sleep 5; alert
+alert() {
+    local exit_code=$?
+    local cmd=$(history 1 | sed 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')
+    local icon=$([ "$exit_code" = 0 ] && echo terminal || echo error)
+    notify-send --urgency=low -i "$icon" "$cmd"
+}
