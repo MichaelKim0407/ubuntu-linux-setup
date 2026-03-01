@@ -6,7 +6,7 @@ parse-git-branch() {
 }
 
 my-ip() {
-    ifconfig | grep -oP "(?<=inet addr:)[\.0-9]*" | grep -v "127.0.0.1" | head -1
+    ip route get 1 2>/dev/null | grep -oP '(?<=src )\S+' || echo "no ip"
 }
 
 trim() {
