@@ -8,7 +8,7 @@ fi
 
 SCRIPT_DIR=$(dirname "$0")
 
-"$SCRIPT_DIR/install/bash.sh"
-"$SCRIPT_DIR/install/vim.sh"
-"$SCRIPT_DIR/install/system-bin.sh"
-"$SCRIPT_DIR/install/root-bin.sh"
+"$SCRIPT_DIR/install/bash.sh" "$@"
+"$SCRIPT_DIR/install/vim.sh" "$@"
+"$SCRIPT_DIR/install/system-bin.sh" "$@"
+"$SCRIPT_DIR/install/root-bin.sh" "$@"

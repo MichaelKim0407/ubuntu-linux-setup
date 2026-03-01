@@ -33,3 +33,27 @@ Run as the non-root user who will be using the system to install user-specific c
 ```bash
 ./install_user.sh
 ```
+
+## Updating
+
+Pull the latest changes as root:
+
+```bash
+git -C /usr/local/lib/ubuntu-linux-util pull
+```
+
+Symlinks installed by `install.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
+
+Re-run the install scripts only if new files have been added. Use `--force` to overwrite any files that were previously installed but have since been modified locally.
+
+As root:
+
+```bash
+./install.sh --force
+```
+
+As the non-root user:
+
+```bash
+./install_user.sh --force
+```
