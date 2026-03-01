@@ -1,93 +1,72 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
-import os
+import argparse
 import logging
-
-FROM = "\r\n"
-TO = "\n"
-INCLUDE = []
-EXCLUDE = []
+from pathlib import Path
 
 logger = logging.getLogger("line-endings")
 
-def has_any(name, l):
-    for item in l:
-        if item in name:
-            return True
-    return False
 
-def recursive(func):
-    def new_func(folder, *args, **kwargs):
-        for fname in os.listdir(folder):
-            path = os.path.join(folder, fname)
-            if has_any(path, EXCLUDE):
-                continue
-            if os.path.isfile(path):
-                if INCLUDE and not has_any(path, INCLUDE):
-                    continue
-                count = func(path, *args, **kwargs)
-                logger.info("In {:<64}: {:>8} lines converted".format(path, count))
-            else:
-                new_func(path, *args, **kwargs)
-    return new_func
-
-@recursive
-def convert(filename):
-    with open(filename) as f:
-        text = f.read()
-    count = text.count(FROM)
-    if count > 0:
-        text = text.replace(FROM, TO)
-        with open(filename, "w") as f:
-            f.write(text)
+def convert_file(path, revert):
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n")
+    if revert:
+        count = text.count("\n") - text.count("\r\n")
+        result = normalized.replace("\n", "\r\n")
+    else:
+        count = text.count("\r\n")
+        result = normalized
+    if result != text:
+        path.write_text(result, encoding="utf-8")
     return count
 
-def print_help():
-    print """line-endings.py [options] [includes] [! excludes]
 
-Options:
-    -h  --help      Show help
-    -r  --revert    Convert "\\n" to "\\r\\n"
+def convert_recursive(folder, revert, include, exclude):
+    for path in Path(folder).iterdir():
+        if any(p in str(path) for p in exclude):
+            continue
+        if not path.is_file():
+            convert_recursive(path, revert, include, exclude)
+            continue
+        if include and not any(p in str(path) for p in include):
+            continue
+        count = convert_file(path, revert)
+        logger.info("In {:<64}: {:>8} lines converted".format(str(path), count))
 
-Includes:
-    All files whose relative path contains any of these will be included.
-    If omitted, all files are included.
 
-Excludes:
-    All files whose relative path contains any of these will be excluded.
-"""
+def main():
+    parser = argparse.ArgumentParser(
+        prog="line-endings",
+        description="Recursively convert line endings from the current directory.",
+    )
+    parser.add_argument(
+        "-r", "--revert",
+        action="store_true",
+        help='Convert "\\n" to "\\r\\n" (Unix to Windows)',
+    )
+    parser.add_argument(
+        "--include",
+        metavar="PATTERN",
+        nargs="+",
+        default=[],
+        help="Only include files whose path contains any of these patterns",
+    )
+    parser.add_argument(
+        "--exclude",
+        metavar="PATTERN",
+        nargs="+",
+        default=[],
+        help="Exclude files whose path contains any of these patterns",
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+
+    logger.info("Includes: %s", args.include)
+    logger.info("Excludes: %s", args.exclude)
+
+    convert_recursive(".", args.revert, args.include, args.exclude)
+
 
 if __name__ == "__main__":
-    from sys import argv
-    args = argv[1:]
-
-    logging.basicConfig(
-            level=logging.INFO,
-            format="[%(levelname)s] %(message)s"
-            )
-
-    # Options
-    while args and args[0].startswith("-"):
-        if args[0] in ["-h", "--help"]:
-            print_help()
-            exit(0)
-        elif args[0] in ["-r", "--revert"]:
-            FROM, TO = TO, FROM
-            logger.info("Option specified: Revert from \\n to \\r\\n")
-        args = args[1:]
-
-    # Includes
-    while args and args[0] != "!":
-        INCLUDE.append(args[0])
-        args = args[1:]
-    logger.info("Includes: {}".format(INCLUDE))
-
-    # Excludes
-    if args and args[0] == "!":
-        args = args[1:]
-    while args:
-        EXCLUDE.append(args[0])
-        args = args[1:]
-    logger.info("Excludes: {}".format(EXCLUDE))
-
-    convert(".")
+    main()
