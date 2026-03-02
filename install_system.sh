@@ -2,7 +2,7 @@
 set -e
 
 if [[ $EUID -ne 0 ]]; then
-    echo "Error: install.sh must be run as root"
+    echo "Error: install_system.sh must be run as root"
     exit 1
 fi
 

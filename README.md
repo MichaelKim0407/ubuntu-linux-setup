@@ -25,7 +25,7 @@ cd /usr/local/lib/ubuntu-linux-util
 Run as root to install system-wide configuration and utilities:
 
 ```bash
-./install.sh
+./install_system.sh
 ```
 
 Run as the non-root user who will be using the system to install user-specific configuration:
@@ -42,14 +42,14 @@ Pull the latest changes as root:
 git -C /usr/local/lib/ubuntu-linux-util pull
 ```
 
-Symlinks installed by `install.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
+Symlinks installed by `install_system.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
 
 Re-run the install scripts only if new files have been added. Use `--force` to overwrite any files that were previously installed but have since been modified locally.
 
 As root:
 
 ```bash
-./install.sh --force
+./install_system.sh --force
 ```
 
 As the non-root user:
