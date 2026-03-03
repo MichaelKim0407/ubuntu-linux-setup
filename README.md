@@ -81,7 +81,7 @@ As root:
 As the non-root user:
 
 ```bash
-./install_desktop_user.sh
+./install_desktop_user.sh --force
 ```
 
 ## Documentation

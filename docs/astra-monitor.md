@@ -1,11 +1,12 @@
 # Astra Monitor
 
-Installs and enables the Astra Monitor GNOME extension.
+Installs and enables the Astra Monitor GNOME extension, then applies settings.
 
-Requires an active GNOME session.
+`astra-monitor.sh` requires an active GNOME session.
 
 Run as the non-root user from the repo root:
 
 ```bash
 install/astra-monitor.sh
+install/astra-monitor-settings.sh
 ```

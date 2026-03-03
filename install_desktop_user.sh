@@ -11,3 +11,4 @@ SCRIPT_DIR=$(dirname "$0")
 "$SCRIPT_DIR/install/gsettings.sh"
 python3 "$SCRIPT_DIR/install/terminator.py"
 "$SCRIPT_DIR/install/astra-monitor.sh"
+"$SCRIPT_DIR/install/astra-monitor-settings.sh" "$@"
