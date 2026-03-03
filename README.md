@@ -1,8 +1,8 @@
-# ubuntu-linux-util
+# ubuntu-linux-setup
 
-Simple utility scripts for Ubuntu/Linux and MacOS
+Simple setup scripts for Ubuntu/Linux and MacOS.
 
-* Branch `master` - Ubuntu/Linux
+* Branch `main` - Ubuntu/Linux
 
 * Branch `mac` - MacOS
 
@@ -18,8 +18,8 @@ Simple utility scripts for Ubuntu/Linux and MacOS
 Clone the repo as root to `/usr/local/lib`:
 
 ```bash
-git clone <repo-url> /usr/local/lib/ubuntu-linux-util
-cd /usr/local/lib/ubuntu-linux-util
+git clone <repo-url> /usr/local/lib/ubuntu-linux-setup
+cd /usr/local/lib/ubuntu-linux-setup
 ```
 
 Run as root to install system-wide configuration and utilities:
@@ -51,7 +51,7 @@ Run as the non-root user to apply desktop configuration:
 Pull the latest changes as root:
 
 ```bash
-git -C /usr/local/lib/ubuntu-linux-util pull
+git -C /usr/local/lib/ubuntu-linux-setup pull
 ```
 
 Symlinks installed by `install_system.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
