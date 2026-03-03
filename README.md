@@ -34,6 +34,18 @@ Run as the non-root user who will be using the system to install user-specific c
 ./install_user.sh
 ```
 
+On desktop systems, run as root to install desktop packages and applications:
+
+```bash
+./install_desktop.sh
+```
+
+Run as the non-root user to apply desktop configuration:
+
+```bash
+./install_desktop_user.sh
+```
+
 ## Updating
 
 Pull the latest changes as root:
@@ -56,6 +68,20 @@ As the non-root user:
 
 ```bash
 ./install_user.sh --force
+```
+
+For desktop scripts, re-run them as needed:
+
+As root:
+
+```bash
+./install_desktop.sh
+```
+
+As the non-root user:
+
+```bash
+./install_desktop_user.sh
 ```
 
 ## Documentation

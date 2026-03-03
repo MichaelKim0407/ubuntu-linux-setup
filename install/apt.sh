@@ -5,10 +5,10 @@ apt-get update
 
 # Each group is sorted alphabetically. Add new packages to the appropriate group.
 # editor, build tools
-apt-get install -y make vim
+apt-get install -y jq make vim
 
 # networking
-apt-get install -y net-tools netcat-openbsd
+apt-get install -y curl net-tools netcat-openbsd
 
 # system monitoring
 apt-get install -y acpi htop iotop
