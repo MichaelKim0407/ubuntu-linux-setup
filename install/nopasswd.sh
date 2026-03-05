@@ -7,7 +7,7 @@ DEST="/etc/sudoers.d/$USER"
 CONTENT="$USER ALL=(ALL) NOPASSWD: ALL"
 
 if sudo test -e "$DEST"; then
-    if [[ "$FORCE" == true ]]; then
+    if confirm_overwrite "$DEST"; then
         echo "$CONTENT" | sudo tee "$DEST" > /dev/null
         sudo chmod 0440 "$DEST"
         echo "Reinstalled $DEST"

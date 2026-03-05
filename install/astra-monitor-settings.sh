@@ -7,8 +7,8 @@ DCONF_PATH="/org/gnome/shell/extensions/astra-monitor/"
 
 EXISTING=$(dconf dump "$DCONF_PATH" | grep -v '^\[' | tr -d '[:space:]')
 if [ -n "$EXISTING" ]; then
-    if [ "$FORCE" = false ]; then
-        echo "Skipping Astra Monitor settings (already configured; use --force to overwrite)"
+    if ! confirm_overwrite "Astra Monitor settings"; then
+        echo "Skipping Astra Monitor settings (already configured)"
         exit 0
     fi
 fi

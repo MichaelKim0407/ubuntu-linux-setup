@@ -12,7 +12,7 @@ fi
 # Install .bash_ps1 (copy)
 ps1_dest="$HOME/.bash_ps1"
 if [[ -e "$ps1_dest" ]]; then
-    if [[ "$FORCE" == true ]]; then
+    if confirm_overwrite ".bash_ps1"; then
         cp "$ps1_src" "$ps1_dest"
         echo "Reinstalled .bash_ps1"
     else

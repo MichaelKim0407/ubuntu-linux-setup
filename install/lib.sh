@@ -4,11 +4,33 @@ _LIB_DIR=$(dirname "${BASH_SOURCE[0]}")
 REPO_ROOT=$(realpath "$_LIB_DIR/..")
 SRC="$REPO_ROOT/src"
 
-FORCE=false
+OVERWRITE=
 for _arg in "$@"; do
-    [[ "$_arg" == "--force" ]] && FORCE=true && break
+    case "$_arg" in
+        --overwrite|-y) OVERWRITE=yes; break ;;
+        --no-overwrite|-n) OVERWRITE=no; break ;;
+    esac
 done
 unset _arg
+
+# Usage: confirm_overwrite <label>
+# Returns 0 to proceed with overwrite, 1 to skip.
+# Behavior is controlled by $OVERWRITE: "yes" always proceeds, "no" always skips,
+# empty prompts the user interactively.
+confirm_overwrite() {
+    local label="$1"
+    if [[ "$OVERWRITE" == yes ]]; then
+        return 0
+    elif [[ "$OVERWRITE" == no ]]; then
+        return 1
+    else
+        read -rp "$label already exists. Overwrite? [y/N] " _answer
+        [[ "$_answer" =~ ^[Yy]$ ]]
+        local _rc=$?
+        unset _answer
+        return $_rc
+    fi
+}
 
 # Usage: install_symlink <src_file> <dest_dir>
 install_symlink() {

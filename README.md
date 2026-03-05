@@ -56,18 +56,18 @@ git -C /usr/local/lib/ubuntu-linux-setup pull
 
 Symlinks installed by `install_system.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
 
-Re-run the install scripts only if new files have been added. Use `--force` to overwrite any files that were previously installed but have since been modified locally.
+Re-run the install scripts only if new files have been added. When a file that requires overwriting is encountered, the script will prompt for confirmation. Pass `--overwrite` (`-y`) to overwrite without prompting, or `--no-overwrite` (`-n`) to skip without prompting.
 
 As root:
 
 ```bash
-./install_system.sh --force
+./install_system.sh --overwrite
 ```
 
 As the non-root user:
 
 ```bash
-./install_user.sh --force
+./install_user.sh --overwrite
 ```
 
 For desktop scripts, re-run them as needed:
@@ -81,7 +81,7 @@ As root:
 As the non-root user:
 
 ```bash
-./install_desktop_user.sh --force
+./install_desktop_user.sh --overwrite
 ```
 
 ## Documentation
