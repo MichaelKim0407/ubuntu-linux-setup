@@ -14,14 +14,10 @@ install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /etc/apt/keyrings/google-chrome.gpg
 chmod a+r /etc/apt/keyrings/google-chrome.gpg
 
-cat > /etc/apt/sources.list.d/google-chrome.sources <<EOF
-Types: deb
-URIs: https://dl.google.com/linux/chrome/deb/
-Suites: stable
-Components: main
-Architectures: amd64
-Signed-By: /etc/apt/keyrings/google-chrome.gpg
-EOF
+# Use the legacy .list format so Chrome's post-install script overwrites this file
+# rather than creating a duplicate google-chrome.list alongside it
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] https://dl.google.com/linux/chrome/deb/ stable main" \
+    > /etc/apt/sources.list.d/google-chrome.list
 
 apt-get update
 apt-get install -y google-chrome-stable
