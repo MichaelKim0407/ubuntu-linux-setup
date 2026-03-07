@@ -1,0 +1,9 @@
+#alias ls='ls-git --color=auto'
+#alias lll='/bin/ls -laGF'  # invoke /bin/ls directly, bypassing the ls-git alias above
+
+alias du1='du --max-depth=1'
+
+alias gzcat='gzip -cd'
+
+alias hardware-info='acpi -V'
+alias temp='acpi -t'

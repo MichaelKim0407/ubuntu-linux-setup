@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+
+import argparse
+import logging
+from pathlib import Path
+
+logger = logging.getLogger("line-endings")
+
+
+def convert_file(path, revert):
+    text = path.read_text(encoding="utf-8")
+    normalized = text.replace("\r\n", "\n")
+    if revert:
+        count = text.count("\n") - text.count("\r\n")
+        result = normalized.replace("\n", "\r\n")
+    else:
+        count = text.count("\r\n")
+        result = normalized
+    if result != text:
+        path.write_text(result, encoding="utf-8")
+    return count
+
+
+def convert_recursive(folder, revert, include, exclude):
+    for path in Path(folder).iterdir():
+        if any(p in str(path) for p in exclude):
+            continue
+        if not path.is_file():
+            convert_recursive(path, revert, include, exclude)
+            continue
+        if include and not any(p in str(path) for p in include):
+            continue
+        count = convert_file(path, revert)
+        logger.info("In {:<64}: {:>8} lines converted".format(str(path), count))
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="line-endings",
+        description="Recursively convert line endings from the current directory.",
+    )
+    parser.add_argument(
+        "-r", "--revert",
+        action="store_true",
+        help='Convert "\\n" to "\\r\\n" (Unix to Windows)',
+    )
+    parser.add_argument(
+        "--include",
+        metavar="PATTERN",
+        nargs="+",
+        default=[],
+        help="Only include files whose path contains any of these patterns",
+    )
+    parser.add_argument(
+        "--exclude",
+        metavar="PATTERN",
+        nargs="+",
+        default=[],
+        help="Exclude files whose path contains any of these patterns",
+    )
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+
+    logger.info("Includes: %s", args.include)
+    logger.info("Excludes: %s", args.exclude)
+
+    convert_recursive(".", args.revert, args.include, args.exclude)
+
+
+if __name__ == "__main__":
+    main()

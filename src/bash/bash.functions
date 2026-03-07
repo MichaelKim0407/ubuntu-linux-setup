@@ -1,0 +1,47 @@
+# These are kept as shell functions (rather than bin scripts) because they may
+# be called from PS1, where functions are preferred to avoid extra process forks.
+
+parse-git-branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+my-ip() {
+    ip route get 1 2>/dev/null | grep -oP '(?<=src )\S+' || echo "no ip"
+}
+
+trim() {
+    local var="$*"
+
+    # remove leading whitespace characters
+    var="${var#"${var%%[![:space:]]*}"}"
+
+    # remove trailing whitespace characters
+    var="${var%"${var##*[![:space:]]}"}"
+
+    echo "$var"
+}
+
+get-venv-name() {
+    if [[ -z "${VIRTUAL_ENV}" ]]; then
+        return
+    fi
+
+    local name="$(basename ${VIRTUAL_ENV})"
+
+    if [[ "${name}" == ".venv" ]] || [[ "${name}" == "venv" ]] || [[ "${name}" == "env" ]]; then
+        name="$(basename $(dirname ${VIRTUAL_ENV}))/${name}"
+    fi
+
+    echo "${name}"
+}
+
+# Not used in PS1. Kept as a function (not a bin script) because it requires
+# shell builtins: $? for the calling shell's exit code, and history.
+# Usage: append "; alert" to any long-running command to get a desktop
+#   notification when it finishes, e.g.: sleep 5; alert
+alert() {
+    local exit_code=$?
+    local cmd=$(history 1 | sed 's/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//')
+    local icon=$([ "$exit_code" = 0 ] && echo terminal || echo error)
+    notify-send --urgency=low -i "$icon" "$cmd"
+}

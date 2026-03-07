@@ -3,3 +3,9 @@
 
 # Mac
 .DS_Store
+
+# Python
+.venv
+
+# Other
+tmp/

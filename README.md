@@ -1,9 +1,89 @@
-# ubuntu-linux-util
+# ubuntu-linux-setup
 
-Simple utility scripts for Ubuntu/Linux and MacOS
+Simple setup scripts for Ubuntu/Linux and MacOS.
 
-* Branch `master` - Ubuntu/Linux
+* Branch `main` - Ubuntu/Linux
 
 * Branch `mac` - MacOS
 
-For usage, please refer to `README` in each directory.
+## Requirements
+
+- Git — install as root with:
+  ```bash
+  apt update && apt install git
+  ```
+
+## Installation
+
+Clone the repo as root to `/usr/local/lib`:
+
+```bash
+git clone <repo-url> /usr/local/lib/ubuntu-linux-setup
+cd /usr/local/lib/ubuntu-linux-setup
+```
+
+Run as root to install system-wide configuration and utilities:
+
+```bash
+./install_system.sh
+```
+
+Run as the non-root user who will be using the system to install user-specific configuration:
+
+```bash
+./install_user.sh
+```
+
+On desktop systems, run as root to install desktop packages and applications:
+
+```bash
+./install_desktop.sh
+```
+
+Run as the non-root user to apply desktop configuration:
+
+```bash
+./install_desktop_user.sh
+```
+
+## Updating
+
+Pull the latest changes as root:
+
+```bash
+git -C /usr/local/lib/ubuntu-linux-setup pull
+```
+
+Symlinks installed by `install_system.sh` and `install_user.sh` point directly into the repo, so most changes take effect immediately without re-running the install scripts.
+
+Re-run the install scripts only if new files have been added. When a file that requires overwriting is encountered, the script will prompt for confirmation. Pass `--overwrite` (`-y`) to overwrite without prompting, or `--no-overwrite` (`-n`) to skip without prompting.
+
+As root:
+
+```bash
+./install_system.sh --overwrite
+```
+
+As the non-root user:
+
+```bash
+./install_user.sh --overwrite
+```
+
+For desktop scripts, re-run them as needed:
+
+As root:
+
+```bash
+./install_desktop.sh
+```
+
+As the non-root user:
+
+```bash
+./install_desktop_user.sh --overwrite
+```
+
+## Documentation
+
+Per-component documentation is in [`docs/`](docs/).
