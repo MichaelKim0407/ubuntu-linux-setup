@@ -8,7 +8,7 @@ apt-get update
 apt-get install -y vim
 
 # system tools
-apt-get install -y jq plocate
+apt-get install -y jq plocate python-is-python3
 
 # networking
 apt-get install -y curl net-tools netcat-openbsd
